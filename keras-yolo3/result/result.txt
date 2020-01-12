@@ -1,0 +1,30 @@
+000001.jpg detect_result£º
+find 1 target(s) 
+person  score: 0.30650756 
+location: top: 0¡¢ bottom: 435¡¢ left: 52¡¢ right: 353
+
+000043.jpg detect_result£º
+find 1 target(s) 
+person  score: 0.34680638 
+location: top: 134¡¢ bottom: 500¡¢ left: 33¡¢ right: 235
+
+000050.jpg detect_result£º
+find 3 target(s) 
+person  score: 0.6504699 
+location: top: 114¡¢ bottom: 336¡¢ left: 83¡¢ right: 264
+person  score: 0.8103558 
+location: top: 53¡¢ bottom: 249¡¢ left: 282¡¢ right: 421
+person  score: 0.83898467 
+location: top: 51¡¢ bottom: 220¡¢ left: 174¡¢ right: 269
+
+000089.jpg detect_result£º
+find 2 target(s) 
+person  score: 0.36258915 
+location: top: 117¡¢ bottom: 354¡¢ left: 334¡¢ right: 463
+person  score: 0.7895162 
+location: top: 0¡¢ bottom: 364¡¢ left: 17¡¢ right: 183
+
+000096.jpg detect_result£º
+find 0 target(s) 
+
+time sum: 4.1579999923706055s
