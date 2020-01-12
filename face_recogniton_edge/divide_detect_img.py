@@ -5,7 +5,7 @@
 from PIL import Image
 import numpy as np
 
-
+# 根据方框坐标切割图像
 def cut_image(image, coord):
     """
     根据方框的位置切分图像
@@ -17,7 +17,7 @@ def cut_image(image, coord):
     im_array = im_array[coord[0]:coord[1], coord[2]:coord[3], :]
     return Image.fromarray(im_array)
 
-
+# 获取单个图像分割出的所有目标
 def get_targets(image, coords):
     """
     获取单个图像分割出的所有目标

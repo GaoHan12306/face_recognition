@@ -22,7 +22,7 @@ from keras.utils import multi_gpu_model
 
 import client  # 客户端连接模块
 
-path = './test/'  # 待检测图片的位置
+PATH = './test/'  # 待检测图片的位置
 
 # 创建一个存储检测结果的dir
 result_path = './result'
@@ -39,7 +39,7 @@ for i in os.listdir(result_path):
 txt_path = result_path + '/result.txt'
 file = open(txt_path, 'w')
 
-
+# 目标检测算法
 class YOLO(object):
     _defaults = {
         "model_path": 'model_data/yolo-thiny-weights.h5',
@@ -209,35 +209,39 @@ class YOLO(object):
     def close_session(self):
         self.sess.close()
 
-
+# 对指定图片进行目标检测
 def detect_images():
     """
     对文件夹的每张图片进行检测
     :return: NULL
     """
-    t1 = time.time()# 开始收货计时
+    start_time = time.time()# 开始收货计时
     yolo = YOLO()
-    for filename in os.listdir(path):
-        image_path = path + '/' + filename
+    for filename in os.listdir(PATH):
+        # 图像的检测
+        image_path = PATH + '/' + filename
         portion = os.path.split(image_path)
         file.write(portion[1] + ' detect_result：\n')
         image = Image.open(image_path)
-        r_image, reason_number, coords = yolo.detect_image(image, file)  # GH 这里添加返回值 检测人数 以判断有无人
+        # r_image: 方框标记后的图像, coords：标记框的属性值，上下左右像素位置
+        r_image, reason_number, coords = yolo.detect_image(image)  # GH 这里添加返回值 检测人数 以判断有无人
         file.write('\n')
-        # r_image.show() # 显示检测结果
+
+        # 保存检测图像到指定位置
         image_save_path = './result/result_' + portion[1]  # 为标记处理后图片路径
         print('detect result save to....:' + image_save_path)
         print('检测出{}人'.format(reason_number))  # GH 输出人数 对这里进行判断>0进行上传edge，进一步姿势识别openpose
         r_image.save(image_save_path)
 
+        # 所需图像上传到边缘服务器
         if reason_number > 0:  # 传输 人数>0的图像给edge端
             client.send_img(image_save_path, coords)
 
-    time_sum = time.time() - t1
+    # 记录总时间
+    time_sum = time.time() - start_time
     file.write('time sum: ' + str(time_sum) + 's')
     print('time sum:', time_sum)
     yolo.close_session()
-
 
 if __name__ == '__main__':
     client.send_name()  # 发送收货人姓名

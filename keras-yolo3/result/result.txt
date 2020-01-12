@@ -27,4 +27,4 @@ location: top: 0¡¢ bottom: 364¡¢ left: 17¡¢ right: 183
 000096.jpg detect_result£º
 find 0 target(s) 
 
-time sum: 4.1579999923706055s
+time sum: 4.178999900817871s

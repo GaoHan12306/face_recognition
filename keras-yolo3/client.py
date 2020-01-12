@@ -3,7 +3,7 @@ import socket
 import os
 import pickle
 
-
+# 传输收货人姓名
 def send_name():
     """
     发送收货人姓名
@@ -21,7 +21,7 @@ def send_name():
     tcp.send(name.encode())
     tcp.close()
 
-
+# 传输检测后图片到边
 def send_img(img_path, coords):
     """
     发送图像和目标检测的坐标信息

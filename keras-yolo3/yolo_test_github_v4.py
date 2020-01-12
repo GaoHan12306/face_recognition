@@ -25,8 +25,9 @@ import client_zbw_v2
 
 path = './test/'  # 待检测图片的位置
 
-# 创建创建一个存储检测结果的dir
+# 创建一个存储检测结果的dir
 result_path = './result'
+# 若不存在则创建
 if not os.path.exists(result_path):
     os.makedirs(result_path)
 

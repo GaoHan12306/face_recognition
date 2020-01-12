@@ -2,7 +2,7 @@
 import socket
 import cv2
 import pickle
-import target_detect
+import divide_detect_img
 from PIL import Image
 import os
 
@@ -108,7 +108,7 @@ def receive_img():
 
     # 保存识别后的图像
     img = Image.open(img_path)
-    detected_img = target_detect.get_targets(img, coords)
+    detected_img = divide_detect_img.get_targets(img, coords)
     img_paths = []
     for i in range(len(detected_img)):
         path = 'result/temp_'+str(i)+'.jpg'
