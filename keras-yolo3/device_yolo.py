@@ -20,7 +20,7 @@ from yolo3.model import yolo_eval, yolo_body, tiny_yolo_body
 from yolo3.utils import letterbox_image
 from keras.utils import multi_gpu_model
 
-import client  # 客户端连接模块
+import client_ctx_v1  # 客户端连接模块
 
 PATH = './test/'  # 待检测图片的位置
 
@@ -251,3 +251,7 @@ if __name__ == '__main__':
         detect_images()
 
     file.close()
+
+
+
+

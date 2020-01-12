@@ -27,4 +27,12 @@ location: top: 0¡¢ bottom: 364¡¢ left: 17¡¢ right: 183
 000096.jpg detect_result£º
 find 0 target(s) 
 
-time sum: 4.178999900817871s
+huge1.jpg detect_result£º
+find 0 target(s) 
+
+huge2.jpg detect_result£º
+find 1 target(s) 
+person  score: 0.73290974 
+location: top: 0¡¢ bottom: 645¡¢ left: 127¡¢ right: 310
+
+time sum: 4.478000164031982s
