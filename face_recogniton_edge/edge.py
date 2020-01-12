@@ -216,6 +216,7 @@ if __name__ == '__main__':
 
     while True:   # GH添加
         img_paths = receive_img()  # 接受检测后的图像
+        #TODO 加入openpose姿势识别
         print('开始人脸识别')
         try:
             face_recognizer = cv2.face.LBPHFaceRecognizer_create()
