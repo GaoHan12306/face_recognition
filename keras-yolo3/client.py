@@ -5,7 +5,7 @@ import pickle
 import time
 
 EDGE_ID = '192.168.31.108'
-EDGE_PORT = 4587
+EDGE_PORT = 4589
 
 
 # 传输收货人姓名

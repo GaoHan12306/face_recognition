@@ -17,7 +17,7 @@ import posedetect_test
 CLOUD_ID = '192.168.31.108'
 CLOUD_PORT = 4000
 EDGE_ID = '192.168.31.108'
-EDGE_PORT = 4587
+EDGE_PORT = 4589
 
 
 # tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
