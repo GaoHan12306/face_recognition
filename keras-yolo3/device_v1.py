@@ -5,7 +5,7 @@
 3. 计算
 """
 
-from yolo_test_github import *
+from yolo_test_github_v5 import *
 from client import *
 import csv
 
@@ -56,8 +56,8 @@ def target_detect(init_image_path, detect_image_path):
     yolo.close_session()
 
     # 返回需要记录的数据
-    init_image_size = os.path.getsize(init_image_path)
-    detect_image_size = os.path.getsize(detect_image_path)
+    init_image_size = get_folder_size(init_image_path)
+    detect_image_size = get_folder_size(detect_image_path)
     target_detect_time = time_sum
     return init_image_size, detect_image_size, target_detect_time, \
            filename_list, coords_list
@@ -87,12 +87,21 @@ def cut_image(init_image_path, cut_image_path, filename_list, coords_list):
 
     # 返回需要记录的数据
     cut_image_time = time.time() - start_time
-    cut_image_size = os.path.getsize(cut_image_path)
+    cut_image_size = get_folder_size(cut_image_path)
     return cut_image_size, cut_image_time
 
 
+# 获取文件夹的大小，单位B
+def get_folder_size(path):
+    ls = os.listdir(path)
+    size = 0
+    for filename in ls:
+        size += os.path.getsize(path+filename)
+    return size
+
+
 def main():
-    client.send_name()  # 发送收货人姓名
+    # client.send_name()  # 发送收货人姓名
     signal = input('无人机已到达地点，请给出指令：')  # 无人机到达地点 给出指令
     if signal == '1':
         with open('./log.csv', 'w', newline='') as f:
