@@ -75,28 +75,23 @@ def gesture_recognize(keypoints, flags):  # define function to recognize gesture
     return flags
 
 
-# 所需要从边上调用的姿势识别，输入识别图像地址，返回是否满足
-def pose_detect(img_path, save_path):
-    # Read new image
-    img = cv2.imread(img_path)
-    # Output keypoints and the image with the human skeleton blended on it
-    keypoints, output_image = openpose.forward(img, True)
+# 对单个图像进行姿势识别并保存
+def pose_recognition(image_path, pose_true_image_path, filename, pose=None):
     """
-    # Print the human pose keypoints, i.e., a [#people x #keypoints x 3]-dimensional numpy object with the keypoints of all the people on that image
-    print(keypoints)
-    # Display the image
-    cv2.imshow("output", output_image)
-    cv2.waitKey(0)
+    :param image_path: 图像路径
+    :param pose_true_image_path: 姿势识别正确的图片保存路径
+    :param filename: 文件名
+    :param pose: 姿势类别
+    :return: 姿势识别是否成功
     """
-
-    # 暂时认为有指定姿势返回大于1，没有返回0
-    temp_pose_id = judge_pose(keypoints)
-    if temp_pose_id >= 1:  # 大于1 说明有指定姿势被识别（暂定 左手或右手抬起）
-        print("temp_pose_id = %s" % temp_pose_id)
-        cv2.imwrite(save_path, output_image)  # 存储检测结果
-        return True
-    else:
-        return False
+    img = cv2.imread(image_path)  # 读取图像
+    keypoints, output_image = openpose.forward(img, True)  # 姿势识别
+    pose_id = judge_pose(keypoints)  # 判断姿势
+    result = False
+    if pose_id >= 1:
+        cv2.imwrite(pose_true_image_path + filename, output_image)
+        result = True
+    return result
 
 
 #  调用姿势识别 判断姿势
@@ -105,9 +100,9 @@ def judge_pose(keypoints):
     if numpy.size(keypoints) != 0:
         keypoints = keypoints[0, :, :]
         flags = gesture_recognize(keypoints, flags)  # let each image compare with keypoints transfered vector and
-        if (flags[0, 0] >= 1):  # 识别出左手抬起
+        if flags[0, 0] >= 1:  # 识别出左手抬起
             return 1
-        if (flags[0, 1] >= 1):  # 识别出右手抬起
+        if flags[0, 1] >= 1:  # 识别出右手抬起
             return 2
         else:
             return 0
