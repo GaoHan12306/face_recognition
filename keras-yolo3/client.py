@@ -7,14 +7,11 @@ import time
 EDGE_ID = '192.168.31.108'
 EDGE_PORT = 4587
 
+
 # 传输收货人姓名
 def send_name():
-    """
-    发送收货人姓名
-    :return: NULL
-    """
     tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    edge_ip = EDGE_ID # 边的ip
+    edge_ip = EDGE_ID  # 边的ip
     edge_port = EDGE_PORT
     edge_addr = (edge_ip, edge_port)
     print('正在连接边缘服务器')
@@ -25,13 +22,14 @@ def send_name():
     tcp.send(name.encode())
     tcp.close()
 
+
 # 传输检测后图片到边
 def send_img(img_path, coords, img_name):
     """
     发送图像和目标检测的坐标信息
-    :param img_path: 图像路径
-    :param coords: 目标检测的坐标信息，二维数组
-    :return: NULL
+    @param img_path: 图像路径
+    @param coords: 目标检测的坐标信息，二维数组
+    @param img_name：图片名称
     """
     tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     edge_ip = EDGE_ID  # 边的 ip
@@ -40,7 +38,7 @@ def send_img(img_path, coords, img_name):
     print('正在连接边缘服务器')
     tcp.connect(edge_addr)
     print('连接成功')
-    #img_path = 'test/000001.jpg'  # 发送固定图片路径
+    # img_path = 'test/000001.jpg'  # 发送固定图片路径
     img_size = os.path.getsize(img_path)  # 经过yolo检测后发送到edge
     print('图片大小：', img_size)
     print(time.time())
@@ -51,7 +49,7 @@ def send_img(img_path, coords, img_name):
         img = open(img_path, 'rb')
         print('开始发送图片')
         while True:
-            data = img.read(1024*1024)
+            data = img.read(1024 * 1024)
             tcp.send(data)
             if len(data) == 0:
                 print('图片发送完毕')

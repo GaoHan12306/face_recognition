@@ -5,19 +5,19 @@
 ### 1. 目标检测
 
 输入：文件夹 init_image（含图片）  
-输出：文件夹 people_image（检测后的图片，含人）
+输出：文件夹 detect_image（检测后的图片，含人）
 
 ### 2. 切割
 
-输入：文件夹 people_image（检测后的图片，含人）  
+输入：文件夹 detect_image（检测后的图片，含人）  
 输出：文件夹 cut_image（切割后的图片，每张仅含一人）
 
 _注_：进行切割时使用未标注的原始图片
 
 ### 3. 计算
 
-含人率：$people\_rate=\frac{people\_image}{init\_image}$  
-平均含人率：$avg\_people\_rate=\frac{cut\_image}{people\_image}$
+含人率：$detect\_rate=\frac{detect\_image}{init\_image}$  
+平均含人率：$avg\_detect\_rate=\frac{cut\_image}{detect\_image}$
 
 ### 4. 上传时间
 
