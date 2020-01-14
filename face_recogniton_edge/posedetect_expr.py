@@ -76,9 +76,10 @@ def gesture_recognize(keypoints, flags):  # define function to recognize gesture
 
 
 # 对单个图像进行姿势识别并保存
-def pose_recognition(image_path, pose_true_image_path, filename, pose=None):
+def pose_recognition(image_path, pose_image_path, pose_true_image_path, filename, pose=None):
     """
     :param image_path: 图像路径
+    :param pose_image_path: 姿势识别后的数据集路径
     :param pose_true_image_path: 姿势识别正确的图片保存路径
     :param filename: 文件名
     :param pose: 姿势类别
@@ -87,6 +88,8 @@ def pose_recognition(image_path, pose_true_image_path, filename, pose=None):
     img = cv2.imread(image_path)  # 读取图像
     keypoints, output_image = openpose.forward(img, True)  # 姿势识别
     pose_id = judge_pose(keypoints)  # 判断姿势
+    cv2.imwrite(pose_image_path + filename, output_image)
+
     result = False
     if pose_id >= 1:
         cv2.imwrite(pose_true_image_path + filename, output_image)

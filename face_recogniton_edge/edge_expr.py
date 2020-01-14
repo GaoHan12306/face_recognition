@@ -30,6 +30,7 @@ from posedetect_expr import *
 TRAINING_DATA_PATH = 'training_data/'
 KNOWN_NAME = 'gaohan'
 CUT_IMAGE_PATH = 'cut_image/'
+POSE_IMAGE_PATH = 'pose_image/'
 POSE_TRUE_IMAGE_PATH = 'pose_true_image/'
 
 
@@ -51,9 +52,10 @@ def train_face_recognition(training_data_path, known_name):
 
 
 # 识别全部姿势
-def pose_detect_all(cut_image_path, pose_true_image_path):
+def pose_detect_all(cut_image_path, pose_image_path, pose_true_image_path):
     """
     :param cut_image_path: 切割后的数据集路径
+    :param pose_image_path: 姿势识别后的数据集路径
     :param pose_true_image_path: 姿势识别正确的数据集路径
     :return filename_list: 姿势识别正确的文件名列表
     :return pose_detect_time: 姿势识别时间
@@ -66,14 +68,15 @@ def pose_detect_all(cut_image_path, pose_true_image_path):
 
     for filename in ls:
         image_path = cut_image_path + filename
-        result = pose_recognition(image_path, pose_true_image_path, filename)
+        result = pose_recognition(image_path, pose_image_path, pose_true_image_path, filename)
         if result:
             filename_list.append(filename)
 
     pose_detect_time = time.time() - start_time
     cut_image_size = get_folder_size(cut_image_path)
+    pose_image_size = get_folder_size(pose_image_path)
     pose_true_image_size = get_folder_size(pose_true_image_path)
-    return filename_list, pose_detect_time, cut_image_size, pose_true_image_size
+    return filename_list, pose_detect_time, cut_image_size, pose_image_size, pose_true_image_size
 
 
 # 人脸匹配
@@ -130,13 +133,13 @@ def main():
         # 第二步：姿势识别
         if not known_faces:
             quit()  # 找不到人脸则退出
-        filename_list, pose_detect_time, cut_image_size, \
-            pose_true_image_size = pose_detect_all(CUT_IMAGE_PATH, POSE_TRUE_IMAGE_PATH)
+        filename_list, pose_detect_time, cut_image_size, pose_image_size, \
+            pose_true_image_size = pose_detect_all(CUT_IMAGE_PATH, POSE_IMAGE_PATH, POSE_TRUE_IMAGE_PATH)
         # 第三步：人脸匹配
         result_list, face_recognition_time = \
             unknown_face_recognition(CUT_IMAGE_PATH, filename_list, known_faces, KNOWN_NAME)
         # 第四步：计算
-        pose_true_rate = pose_true_image_size / cut_image_size
+        pose_true_rate = pose_true_image_size / pose_image_size
         # 第五步：写需要记录的数据
         f_log.writerow([
             cut_image_size,
