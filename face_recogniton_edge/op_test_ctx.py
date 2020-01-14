@@ -1,5 +1,7 @@
-from face_recognition.face_recogniton_edge import posedetect_test
+
 import os
+
+import posedetect_test
 
 if __name__ == '__main__':
 

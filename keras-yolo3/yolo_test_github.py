@@ -39,6 +39,7 @@ for i in os.listdir(result_path):
 txt_path = result_path + '/result.txt'
 file = open(txt_path, 'w')
 
+
 # 目标检测算法
 class YOLO(object):
     _defaults = {
@@ -204,10 +205,11 @@ class YOLO(object):
 
         end = timer()
         print('time consume:%.3f s ' % (end - start))
-        return image, len(out_boxes), coords # ZBW add
+        return image, len(out_boxes), coords  # ZBW add
 
     def close_session(self):
         self.sess.close()
+
 
 # 对指定图片进行目标检测
 def detect_images():
@@ -215,9 +217,11 @@ def detect_images():
     对文件夹的每张图片进行检测
     :return: NULL
     """
-    start_time = time.time()# 开始收货计时
+    start_time = time.time()  # 开始收货计时
     yolo = YOLO()
-    for filename in os.listdir(PATH):
+    ls = os.listdir(PATH)
+    ls.sort()
+    for filename in ls:
         # 图像的检测
         image_path = PATH + '/' + filename
         portion = os.path.split(image_path)
@@ -236,7 +240,13 @@ def detect_images():
         # 所需图像上传到边缘服务器
         img_name = 'result_' + portion[1]
         if reason_number > 0:  # 传输 人数>0的图像给edge端
+            # try:
+            #     client.send_img(image_save_path, coords, img_name)
+            # except Exception:
+            #     print("no frame")
+            #     pass
             client.send_img(image_save_path, coords, img_name)
+            # time.sleep(0.1)
 
     # 记录总时间
     time_sum = time.time() - start_time
@@ -244,10 +254,12 @@ def detect_images():
     print('time sum:', time_sum)
     yolo.close_session()
 
+
 if __name__ == '__main__':
     client.send_name()  # 发送收货人姓名
     signal = input('无人机已到达地点，请给出指令：')  # 无人机到达地点 给出指令
     if signal == '1':
         detect_images()
+        time.sleep(1)
 
     file.close()

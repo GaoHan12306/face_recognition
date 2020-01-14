@@ -5,6 +5,7 @@ Class definition of YOLO_v3 style detection model on image and video
 
 import colorsys
 import os
+import time
 from timeit import default_timer as timer
 
 import numpy as np
@@ -212,3 +213,17 @@ def detect_video(yolo, video_path, output_path=""):
             break
     yolo.close_session()
 
+# if __name__ == '__main__':
+#     yolo = YOLO()
+#     img = Image.open('001.jpg')
+#     a = time.time()
+#     yolo.detect_image(img)
+#     b = time.time()
+#     print("b-a")
+#     print(b-a)
+#
+#     a = time.time()
+#     yolo.detect_image(img)
+#     b = time.time()
+#     print("b-a")
+#     print(b - a)

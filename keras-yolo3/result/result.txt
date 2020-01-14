@@ -1,38 +1,28 @@
-000001.jpg detect_result£∫
-find 1 target(s) 
-person  score: 0.30650756 
-location: top: 0°¢ bottom: 435°¢ left: 52°¢ right: 353
+001.jpg detect_resultÔºö
+find 6 target(s) 
+person  score: 0.307438 
+location: top: 76„ÄÅ bottom: 377„ÄÅ left: 911„ÄÅ right: 1006
+person  score: 0.41617095 
+location: top: 95„ÄÅ bottom: 349„ÄÅ left: 1077„ÄÅ right: 1153
+person  score: 0.48478535 
+location: top: 73„ÄÅ bottom: 377„ÄÅ left: 1175„ÄÅ right: 1251
+person  score: 0.5129116 
+location: top: 0„ÄÅ bottom: 681„ÄÅ left: 604„ÄÅ right: 853
+person  score: 0.624561 
+location: top: 139„ÄÅ bottom: 430„ÄÅ left: 286„ÄÅ right: 442
+person  score: 0.64475024 
+location: top: 166„ÄÅ bottom: 474„ÄÅ left: 623„ÄÅ right: 798
 
-000043.jpg detect_result£∫
-find 1 target(s) 
-person  score: 0.34680638 
-location: top: 134°¢ bottom: 500°¢ left: 33°¢ right: 235
+002.jpg detect_resultÔºö
+find 5 target(s) 
+person  score: 0.31999883 
+location: top: 100„ÄÅ bottom: 292„ÄÅ left: 873„ÄÅ right: 945
+person  score: 0.37486243 
+location: top: 96„ÄÅ bottom: 305„ÄÅ left: 1078„ÄÅ right: 1134
+person  score: 0.49885666 
+location: top: 45„ÄÅ bottom: 618„ÄÅ left: 604„ÄÅ right: 852
+person  score: 0.5178115 
+location: top: 160„ÄÅ bottom: 477„ÄÅ left: 634„ÄÅ right: 799
+person  score: 0.59907466 
+location: top: 130„ÄÅ bottom: 439„ÄÅ left: 284„ÄÅ right: 449
 
-000050.jpg detect_result£∫
-find 3 target(s) 
-person  score: 0.6504699 
-location: top: 114°¢ bottom: 336°¢ left: 83°¢ right: 264
-person  score: 0.8103558 
-location: top: 53°¢ bottom: 249°¢ left: 282°¢ right: 421
-person  score: 0.83898467 
-location: top: 51°¢ bottom: 220°¢ left: 174°¢ right: 269
-
-000089.jpg detect_result£∫
-find 2 target(s) 
-person  score: 0.36258915 
-location: top: 117°¢ bottom: 354°¢ left: 334°¢ right: 463
-person  score: 0.7895162 
-location: top: 0°¢ bottom: 364°¢ left: 17°¢ right: 183
-
-000096.jpg detect_result£∫
-find 0 target(s) 
-
-huge1.jpg detect_result£∫
-find 0 target(s) 
-
-huge2.jpg detect_result£∫
-find 1 target(s) 
-person  score: 0.73290974 
-location: top: 0°¢ bottom: 645°¢ left: 127°¢ right: 310
-
-time sum: 4.478000164031982s
