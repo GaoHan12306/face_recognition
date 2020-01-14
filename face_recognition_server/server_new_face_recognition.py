@@ -28,7 +28,7 @@ def face_train(name, path='training_data/'):
 def main():
     tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # tcp.bind(('172.19.5.75', 1000))  # 云自己的ip
-    tcp.bind(('192.168.31.108', 3000))
+    tcp.bind(('192.168.31.108', 4000))
     print('服务器运行中')
     tcp.listen(128)
 

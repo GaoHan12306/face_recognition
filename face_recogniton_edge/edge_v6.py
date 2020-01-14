@@ -7,14 +7,18 @@ import divide_detect_img
 from PIL import Image
 import os
 import time
+
+import posedetect_test
+
 '''
 加入需要时间参数写入
 '''
 
 CLOUD_ID = '192.168.31.108'
-CLOUD_PORT = 3000
+CLOUD_PORT = 4000
 EDGE_ID = '192.168.31.108'
-EDGE_PORT = 4566
+EDGE_PORT = 4587
+
 
 # tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # print('正在连接终端')
@@ -73,6 +77,7 @@ def send_name_to_server(name):
 
     tcp.send('edge_ok'.encode())
     return known_faces
+
 
 # 接收图像、接收检测框坐标、分割图像、保存分割图像、（姿势识别）、人脸识别
 # 接受目标识别后的图片并进行切分和保存，返回切分后的图片的地址
@@ -157,11 +162,13 @@ def receive_img():
     #     except IndexError:
     #         print('没有识别到人脸！')
 
-        # TODO 加入openpose姿势识别
+    # TODO 加入openpose姿势识别
 
     # return img_paths
 
-        # 切分图像并进行保存
+    # 切分图像并进行保存
+
+
 def divide_image(img_path, coords, img_name):
     # 切分图像并进行保存
     img = Image.open(img_path)
@@ -180,7 +187,7 @@ def divide_image(img_path, coords, img_name):
 if __name__ == '__main__':
 
     unknown_image = face_recognition.load_image_file("result_2_0.jpg")
-    unknown_face_encoding = face_recognition.face_encodings(unknown_image)[0]
+    unknown_face_encoding = face_recognition.face_encodings(unknown_image)[0]  # 提前加载 人脸识别特征函数
 
     result_path = './result'
     # result如果之前存放的有文件，全部清除
@@ -195,28 +202,42 @@ if __name__ == '__main__':
     print('已完成接收模型，准备接收终端匹配图像')
 
     while True:  # GH添加
-        print('开始接收图片，开始计时')
+        print('\n开始接收图片，开始计时')
         img_path, coords, img_name = receive_img()  # 接受检测后的图像、分割坐标、图像名 # TODO 传输时间 transmission_time 需要记入excle
         img_paths = divide_image(img_path, coords, img_name)  # 切分图像并保存   # TODO 切割图像时间 divide_time 需要记入excle
-
-
-        print('开始姿势识别')  # 进入姿势识别
-        openpose_start_time =time.time()
-        # TODO 加入姿势识别  并需要姿势识别时间openpose_time 记入excle
-        openpose_end_time = time.time()
-        openpose_time = openpose_start_time - openpose_end_time
-
 
         print('成功接受检测后的图像，开始人脸识别')
         for img_path in img_paths:
             print('当前识别的图片路径为：%s' % img_path)
+            portion = os.path.split(img_path)
+            save_path = './result/result_pose_' + portion[1]
             try:
-                # 检测从端发送并切割的图像，然后提取其特征
+
+                print('开始姿势识别')  # 2-进入姿势识别
+                openpose_start_time = time.time()
+                # TODO 加入姿势识别  并需要姿势识别时间openpose_time 记入excle
+                result = posedetect_test.pose_detect(img_path, save_path)
+                openpose_end_time = time.time()
+                openpose_time = openpose_end_time - openpose_start_time
+                print('openpose_time: %s' % str(openpose_time))
+                if not result:
+                    print('没有指定举手姿势')
+                    continue
+
+                # 3-检测从端发送并切割的图像，然后提取其特征
+                face_recognition_start_time = time.time()  # 记录人脸识别开始时间
                 unknown_image = face_recognition.load_image_file(img_path)
                 unknown_face_encoding = face_recognition.face_encodings(unknown_image)[0]
                 # 匹配从云获取的图像特征和当前切割后的图像特征是否是同一人
                 results = face_recognition.compare_faces(known_faces, unknown_face_encoding)
-                print(results)
+                face_recognition_end_time = time.time()  # 记录人脸识别结束时间
+                face_recognition_time = face_recognition_end_time - face_recognition_start_time  # 人脸识别时间
+                print('face_recognition_time: %s' % face_recognition_time)
+                print('识别结果为{}'.format(results))
             except IndexError:
+                face_recognition_end_time = time.time()  # 记录人脸识别结束时间
+                face_recognition_time = face_recognition_end_time - face_recognition_start_time  # 人脸识别时间
+                print('face_recognition_time: %s' % face_recognition_time)
                 print('没有识别到人脸！')
+
         print('结束图片处理，结束计时')

@@ -245,8 +245,10 @@ def detect_images():
             # except Exception:
             #     print("no frame")
             #     pass
+
+            time.sleep(0.5)  # TODO 为了等待 边处理完成 端才开始发送
             client.send_img(image_save_path, coords, img_name)
-            # time.sleep(0.1)
+
 
     # 记录总时间
     time_sum = time.time() - start_time
@@ -260,6 +262,6 @@ if __name__ == '__main__':
     signal = input('无人机已到达地点，请给出指令：')  # 无人机到达地点 给出指令
     if signal == '1':
         detect_images()
-        time.sleep(1)
+        # time.sleep(1)
 
     file.close()
