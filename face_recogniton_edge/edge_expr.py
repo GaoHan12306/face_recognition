@@ -29,9 +29,25 @@ from posedetect_expr import *
 
 TRAINING_DATA_PATH = 'training_data/'
 KNOWN_NAME = 'gaohan'
-CUT_IMAGE_PATH = 'cut_image/'
-POSE_IMAGE_PATH = 'pose_image/'
-POSE_TRUE_IMAGE_PATH = 'pose_true_image/'
+CUT_IMAGE_PATH = '100/'
+POSE_IMAGE_PATH = '500_pose_image/'
+POSE_TRUE_IMAGE_PATH = '500_pose_true_image/'
+CSV_NAME = '100_edge_over_1_and_2.csv'
+
+
+def init_folder(path, is_data_set=False):
+    """
+    :param path: 文件夹路径
+    :param is_data_set: 是否是数据集
+    """
+    if os.path.exists(path):
+        if not is_data_set:
+            for file in os.listdir(path):
+                path_file = os.path.join(path, file)
+                if os.path.isfile(path_file):
+                    os.remove(path_file)
+    else:
+        os.makedirs(path)
 
 
 # 获取训练特征列表
@@ -108,6 +124,34 @@ def unknown_face_recognition(cut_image_path, filename_list, known_faces, known_n
     face_recognition_time = time.time() - start_time
     return result_list, face_recognition_time
 
+# 人脸匹配(不经过姿势识别)
+def unknown_face_recognition_over_openpose(cut_image_path, known_faces, known_name):
+    """
+    :param cut_image_path: 切割后的图像文件夹
+    :param known_faces: 训练集特征列表
+    :param known_name: 收货人姓名
+    :return result_list: 人脸匹配结果列表
+    :return face_recognition_time: 人脸匹配时间
+    """
+    start_time = time.time()
+    result_list = []
+    ls = os.listdir(cut_image_path)
+
+    for filename in ls:
+        try:
+            image_path = cut_image_path + filename
+            unknown_image = face_recognition.load_image_file(image_path)
+            unknown_face_encoding = face_recognition.face_encodings(unknown_image)[0]
+            result = face_recognition.compare_faces(known_faces, unknown_face_encoding)
+            if len(result) > 0 and result[0]:
+                result_list.append([filename, known_name])
+            else:
+                result_list.append([filename, 'unknown'])
+        except IndexError:
+            print('文件 %s 未识别到人脸！' % filename)
+
+    face_recognition_time = time.time() - start_time
+    return result_list, face_recognition_time
 
 # 获取文件夹的大小，单位B
 def get_folder_size(path):
@@ -119,7 +163,7 @@ def get_folder_size(path):
 
 
 def main():
-    with open('./log.csv', 'w', newline='') as f:
+    with open(CSV_NAME, 'w', newline='') as f:
         f_log = csv.writer(f)
         f_log.writerow([
             '切割后的数据集大小',
@@ -130,9 +174,9 @@ def main():
         ])
         # 第一步：获取训练特征列表
         known_faces = train_face_recognition(TRAINING_DATA_PATH, KNOWN_NAME)
-        # 第二步：姿势识别
         if not known_faces:
             quit()  # 找不到人脸则退出
+        # 第二步：姿势识别
         filename_list, pose_detect_time, cut_image_size, pose_image_size, \
             pose_true_image_size = pose_detect_all(CUT_IMAGE_PATH, POSE_IMAGE_PATH, POSE_TRUE_IMAGE_PATH)
         # 第三步：人脸匹配
@@ -151,6 +195,47 @@ def main():
         # 第六步：写人脸识别结果
         f_log.writerows(result_list)
 
+def main_over_pose():
+    with open(CSV_NAME, 'w', newline='') as f:
+        f_log = csv.writer(f)
+        f_log.writerow([
+            '切割后的数据集大小',
+            '姿势识别后的数据集大小',
+            '姿势识别率',
+            '姿势识别时间',
+            '人脸匹配时间'
+        ])
+        # 第一步：获取训练特征列表
+        known_faces = train_face_recognition(TRAINING_DATA_PATH, KNOWN_NAME)
+        if not known_faces:
+            quit()  # 找不到人脸则退出
+        # 第三步：人脸匹配
+        result_list, face_recognition_time = \
+            unknown_face_recognition_over_openpose(CUT_IMAGE_PATH, known_faces, KNOWN_NAME)
+        cut_image_size = get_folder_size(CUT_IMAGE_PATH)
+        # 第五步：写需要记录的数据
+        f_log.writerow([
+            cut_image_size,
+            face_recognition_time
+        ])
+        # 第六步：写人脸识别结果
+        f_log.writerows(result_list)
 
 if __name__ == '__main__':
-    main()
+    init_folder(CUT_IMAGE_PATH, True)
+
+    # 1、2、3
+    # init_folder(POSE_IMAGE_PATH)
+    # init_folder(POSE_TRUE_IMAGE_PATH)
+    # main()
+
+    # 1、3
+    main_over_pose()
+
+    # 2、3 CUT_IMAGE_PATH
+    # init_folder(POSE_IMAGE_PATH)
+    # init_folder(POSE_TRUE_IMAGE_PATH)
+    # main()
+
+    # 3 CUT_IMAGE_PATH
+    # main_over_pose()
