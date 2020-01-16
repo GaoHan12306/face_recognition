@@ -8,9 +8,26 @@
 from yolo_expr import *
 import csv
 
-INIT_IMAGE_PATH = 'init_image/'  # 初始数据集路径
-DETECT_IMAGE_PATH = 'detect_image/'  # 检测后含人的数据集路径
-CUT_IMAGE_PATH = 'cut_image/'  # 切割后仅含一人的数据集
+INIT_IMAGE_PATH = '2500/'  # 初始数据集路径
+DETECT_IMAGE_PATH = '2500_detect_image/'  # 检测后含人的数据集路径
+CUT_IMAGE_PATH = '2500_cut_image/'  # 切割后仅含一人的数据集
+CSV_NAME = '2500.csv'
+
+
+# 初始化文件夹，没有则创建，有则删除原有文件（不含数据集）
+def init_folder(path, is_data_set=False):
+    """
+    @param path: 文件夹路径
+    @param is_data_set: 是否是数据集，默认不是
+    """
+    if os.path.exists(path):
+        if not is_data_set:
+            for file in os.listdir(path):
+                path_file = os.path.join(path, file)
+                if os.path.isfile(path_file):
+                    os.remove(path_file)
+    else:
+        os.makedirs(path)
 
 
 # 目标检测
@@ -100,7 +117,7 @@ def get_folder_size(path):
 
 
 def main():
-    with open('./log.csv', 'w', newline='') as f:
+    with open(CSV_NAME, 'w', newline='') as f:
         f_log = csv.writer(f)  # 创建csv文件对象
         f_log.writerow([
             '初始数据集大小',
@@ -136,5 +153,8 @@ def test():
 
 
 if __name__ == '__main__':
+    init_folder(INIT_IMAGE_PATH, True)
+    init_folder(DETECT_IMAGE_PATH)
+    init_folder(CUT_IMAGE_PATH)
     main()
     # test()
