@@ -29,10 +29,10 @@ from posedetect_expr import *
 
 TRAINING_DATA_PATH = 'training_data/'
 KNOWN_NAME = 'gaohan'
-CUT_IMAGE_PATH = '100/'
-POSE_IMAGE_PATH = '500_pose_image/'
-POSE_TRUE_IMAGE_PATH = '500_pose_true_image/'
-CSV_NAME = '100_edge_over_1_and_2.csv'
+CUT_IMAGE_PATH = '2500/'
+POSE_IMAGE_PATH = '200_pose_image/'
+POSE_TRUE_IMAGE_PATH = '200_pose_true_image/'
+CSV_NAME = '2500_edge_over_1_and_2.csv'
 
 
 def init_folder(path, is_data_set=False):
@@ -224,18 +224,18 @@ def main_over_pose():
 if __name__ == '__main__':
     init_folder(CUT_IMAGE_PATH, True)
 
-    # 1、2、3
+    # 1、2、3  结果=100_edge.csv
     # init_folder(POSE_IMAGE_PATH)
     # init_folder(POSE_TRUE_IMAGE_PATH)
     # main()
 
-    # 1、3
-    main_over_pose()
-
-    # 2、3 CUT_IMAGE_PATH
+    # 2、3 CUT_IMAGE_PATH 修改为原数据数据路径  结果=100_edge_over_1.csv
     # init_folder(POSE_IMAGE_PATH)
     # init_folder(POSE_TRUE_IMAGE_PATH)
     # main()
 
-    # 3 CUT_IMAGE_PATH
+    # 1、3  结果=100_edge_over_openpose.csv
     # main_over_pose()
+
+    # 3 CUT_IMAGE_PATH 修改为原数据数据路径  结果=100_edge_over_1_and_2.csv
+    main_over_pose()
